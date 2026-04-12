@@ -1,0 +1,21 @@
+{
+  "profile": [
+    "![GitHub followers](https://img.shields.io/github/followers/leo267410-dev?style=social)",
+    "![GitHub stars](https://img.shields.io/github/stars/leo267410-dev?style=social)",
+    "![Visitor Count](https://profile-counter.glitch.me/leo267410-dev/count.svg)"
+  ],
+  "repository": [
+    "![GitHub stars](https://img.shields.io/github/stars/leo267410-dev/brain-inspired-ai?style=social)",
+    "![GitHub forks](https://img.shields.io/github/forks/leo267410-dev/brain-inspired-ai?style=social)",
+    "![GitHub issues](https://img.shields.io/github/issues/leo267410-dev/brain-inspired-ai)",
+    "![GitHub license](https://img.shields.io/github/license/leo267410-dev/brain-inspired-ai)",
+    "![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)",
+    "![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=PyTorch&logoColor=white)"
+  ],
+  "performance": [
+    "![MNIST Accuracy](https://img.shields.io/badge/MNIST-98.83%25-brightgreen)",
+    "![Model Size](https://img.shields.io/badge/Model-760K-blue)",
+    "![Training Time](https://img.shields.io/badge/Training-3.5min-orange)",
+    "![License](https://img.shields.io/badge/License-MIT-green)"
+  ]
+}

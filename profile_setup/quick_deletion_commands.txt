@@ -1,0 +1,28 @@
+# QUICK DELETION COMMANDS
+# Open these URLs to delete the repositories permanently
+
+# Repository 1: experiment-ai-with-ai
+https://github.com/leo267410-dev/experiment-ai-with-ai/settings
+
+# Repository 2: -ai-evaluation-api
+https://github.com/leo267410-dev/-ai-evaluation-api/settings
+
+# Repository 3: akimg-ai
+https://github.com/leo267410-dev/akimg-ai/settings
+
+# INSTRUCTIONS FOR EACH REPOSITORY:
+# 1. Open the URL above
+# 2. Scroll to "Danger Zone" at the bottom
+# 3. Click "Delete this repository" (red button)
+# 4. Type the repository name to confirm
+# 5. Click "I understand the consequences, delete this repository"
+# 6. Click final confirmation
+
+# ORDER OF DELETION (Recommended):
+# 1. experiment-ai-with-ai (first)
+# 2. -ai-evaluation-api (second)
+# 3. akimg-ai (third)
+
+# AFTER DELETION:
+# Your profile will show only: brain-inspired-ai
+# Professional transformation complete!

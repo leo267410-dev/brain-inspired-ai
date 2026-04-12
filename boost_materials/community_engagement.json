@@ -1,0 +1,89 @@
+{
+  "posts": [
+    {
+      "platform": "Hacker News",
+      "title": "Brain-Inspired AI: 98.83% MNIST accuracy with real neuroscience",
+      "content": "I've created a brain-inspired AI system that models the human brain's structure and achieves 98.83% accuracy on MNIST. It includes 3,313+ neuronal subtypes, multiple brain regions, and biologically-inspired learning mechanisms. This is an attempt to bridge neuroscience and AI with a complete, working system.",
+      "tags": [
+        "ai",
+        "machine-learning",
+        "neuroscience",
+        "brain",
+        "neural-networks"
+      ]
+    },
+    {
+      "platform": "Dev.to",
+      "title": "Building Brain-Inspired AI: From 3,313 Neurons to 98.83% Accuracy",
+      "content": "Learn how I built a brain-inspired AI system that achieves 98.83% MNIST accuracy. We'll cover:\n\n1. The neuroscience behind 3,313+ neuronal subtypes\n2. Implementing brain regions (cortex, hippocampus, basal ganglia)\n3. Biologically-inspired learning mechanisms\n4. Training and evaluation on real data\n5. Interactive visual interface for building models\n\nThis is a complete, working system, not just a demo!",
+      "tags": [
+        "ai",
+        "machine-learning",
+        "neuroscience",
+        "pytorch",
+        "tutorial"
+      ]
+    },
+    {
+      "platform": "Medium",
+      "title": "The Future of AI is Brain-Inspired: A Complete Implementation",
+      "content": "Traditional neural networks ignore decades of neuroscience research. I've built a brain-inspired AI system that incorporates real brain structure and function. Here's what I learned from implementing 3,313 neuronal subtypes, 6-layer cortical organization, and biologically-inspired learning mechanisms.",
+      "tags": [
+        "Artificial Intelligence",
+        "Neuroscience",
+        "Machine Learning",
+        "Deep Learning"
+      ]
+    }
+  ],
+  "challenges": [
+    {
+      "title": "Beat the Brain: MNIST Challenge",
+      "description": "Can you beat 98.83% MNIST accuracy using brain-inspired principles?",
+      "rules": [
+        "Must use brain-inspired architecture",
+        "Must incorporate at least 3 different neuron types",
+        "Must implement biologically-inspired learning",
+        "Submissions must be open source"
+      ],
+      "prizes": [
+        "Featured in repository showcase",
+        "Brain-Inspired AI contributor badge",
+        "Co-authorship on research paper"
+      ],
+      "deadline": "30 days from launch"
+    },
+    {
+      "title": "Neural Diversity Hackathon",
+      "description": "Create the most diverse neural network using our framework",
+      "rules": [
+        "Use our brain-inspired AI framework",
+        "Implement novel neuron types",
+        "Show performance on real datasets",
+        "Document biological inspiration"
+      ],
+      "prizes": [
+        "GitHub sponsorship",
+        "Conference presentation opportunity",
+        "Research collaboration"
+      ],
+      "deadline": "60 days from launch"
+    },
+    {
+      "title": "Explainable Brain AI Challenge",
+      "description": "Make brain-inspired AI more interpretable and explainable",
+      "rules": [
+        "Use brain-inspired architecture",
+        "Implement visualization tools",
+        "Provide biological interpretations",
+        "Demonstrate on real problems"
+      ],
+      "prizes": [
+        "Featured in AI explainability community",
+        "Research paper publication support",
+        "Industry partnership opportunity"
+      ],
+      "deadline": "45 days from launch"
+    }
+  ]
+}
