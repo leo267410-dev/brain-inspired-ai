@@ -103,12 +103,26 @@ class NexusTrainer:
         input_ids = batch["input_ids"].to(self.device)
         labels = batch.get("labels", input_ids[:, 1:]).to(self.device)
 
-        with torch.amp.autocast("cuda", dtype=self.autocast_dtype, enabled=self.autocast_dtype != torch.float32):
+        amp_device = "cuda" if self.device.type == "cuda" else "cpu"
+        use_amp = self.autocast_dtype != torch.float32 and self.device.type == "cuda"
+
+        with torch.amp.autocast(amp_device, dtype=self.autocast_dtype, enabled=use_amp):
             outputs = self.model(input_ids)
+
             if isinstance(outputs, dict):
-                loss = outputs.get("loss", torch.tensor(0.0, device=self.device))
+                logits = outputs["logits"]
+                # Shift logits and labels for next-token prediction
+                shift_logits = logits[:, :-1].contiguous()
+                shift_labels = labels[:, :shift_logits.size(1)].contiguous()
+                loss = nn.functional.cross_entropy(
+                    shift_logits.view(-1, shift_logits.size(-1)),
+                    shift_labels.view(-1),
+                    ignore_index=-100,
+                )
+                # Add MoE load balancing loss
+                moe_loss = outputs.get("moe_loss", torch.tensor(0.0, device=self.device))
+                loss = loss + 0.01 * moe_loss
             else:
-                # Compute cross-entropy loss
                 logits = outputs[:, :-1].contiguous()
                 loss = nn.functional.cross_entropy(
                     logits.view(-1, logits.size(-1)),
