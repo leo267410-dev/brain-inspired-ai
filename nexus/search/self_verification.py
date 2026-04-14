@@ -64,7 +64,7 @@ class SelfVerificationLoop(nn.Module):
                 break
 
             # Create revision signal
-            conf_tensor = verification["quality_score"].unsqueeze(-1).expand_as(
+            conf_tensor = verification["quality_score"].unsqueeze(-1).unsqueeze(-1).expand_as(
                 current_hidden[:, :, :1],
             )  # (B, L, 1)
 

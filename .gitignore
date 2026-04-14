@@ -38,7 +38,7 @@ ENV/
 Thumbs.db
 
 # Data files (large)
-data/
+/data/
 *.pkl
 *.h5
 *.hdf5
