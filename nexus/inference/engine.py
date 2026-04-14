@@ -68,7 +68,10 @@ class InferenceEngine:
             if repetition_penalty != 1.0:
                 for b in range(generated.shape[0]):
                     for token_id in generated[b].unique():
-                        next_logits[b, token_id] /= repetition_penalty
+                        if next_logits[b, token_id] > 0:
+                            next_logits[b, token_id] /= repetition_penalty
+                        else:
+                            next_logits[b, token_id] *= repetition_penalty
 
             # Temperature
             next_logits = next_logits / temperature
