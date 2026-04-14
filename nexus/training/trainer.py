@@ -214,7 +214,7 @@ class NexusTrainer:
 
     def load_checkpoint(self, path: str) -> None:
         """Load model checkpoint."""
-        checkpoint = torch.load(f"{path}/model.pt", map_location=self.device)
+        checkpoint = torch.load(f"{path}/model.pt", map_location=self.device, weights_only=True)
         self.model.load_state_dict(checkpoint["model_state_dict"])
         self.optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
         self.global_step = checkpoint["global_step"]
