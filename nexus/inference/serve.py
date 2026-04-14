@@ -62,7 +62,7 @@ class NexusServer:
         from nexus.model.nexus_model import NexusOmegaModel
 
         self.model = NexusOmegaModel(self.config)
-        checkpoint = torch.load(model_path, map_location=self.device)
+        checkpoint = torch.load(model_path, map_location=self.device, weights_only=True)
         if "model_state_dict" in checkpoint:
             self.model.load_state_dict(checkpoint["model_state_dict"])
         else:

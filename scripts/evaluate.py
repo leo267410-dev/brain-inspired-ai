@@ -32,7 +32,7 @@ def main() -> None:
     model = NexusOmegaModel(config)
 
     if args.checkpoint:
-        checkpoint = torch.load(args.checkpoint, map_location="cpu")
+        checkpoint = torch.load(args.checkpoint, map_location="cpu", weights_only=True)
         model.load_state_dict(checkpoint["model_state_dict"])
         print(f"Loaded checkpoint from {args.checkpoint}")
 
