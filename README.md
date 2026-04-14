@@ -1,280 +1,121 @@
-# Brain-Inspired AI Architecture
+# NEXUS-Ω (Omega)
 
-A comprehensive neural network system modeled after the human brain's structure and neuronal diversity, implementing over 3,000 distinct neuronal types and brain-inspired learning mechanisms.
+A sub-200M parameter language model for **coding** and **English language understanding** that achieves trillion-parameter-level capability through radical architectural innovations.
 
-## Overview
+## Key Innovations
 
-This project creates an AI model whose architecture closely mirrors the human brain, incorporating:
+| Innovation | Description |
+|---|---|
+| **Shared MoE** | 64 experts shared across all 24 layers with per-layer routers, creating 64^24 possible computation paths |
+| **SSM-Attention Hybrid** | Mamba-style SSM for O(n) local processing + hierarchical sparse attention for global context |
+| **Thought Engine** | Internal chain-of-thought reasoning with thought compression and confidence-based early stopping |
+| **External Neural Memory** | Differentiable read/write memory bank with LRU replacement and LSH-based fast retrieval |
+| **MCTS Code Search** | Monte Carlo Tree Search for exploring code generation paths with learned value/policy functions |
+| **Recursive Reasoning** | Multi-loop recursive computation with scratchpad memory for complex multi-step problems |
+| **Smart Neurons** | Adaptive neuron gating with evolutionary pruning — bottom 5% neurons are periodically reinitialized |
+| **Hebbian Lateral Connections** | Sparse within-layer and cross-layer connections updated via Hebbian learning (no backprop) |
+| **Dynamic Depth/Width** | Per-token early exit and per-dimension width gating for adaptive computation |
+| **Self-Verification** | Generate → verify → revise loop with test-time training via LoRA |
+| **Meta-Controller** | Dynamically allocates computation resources based on input difficulty |
 
-- **Diverse Neuron Types**: Excitatory pyramidal neurons, inhibitory interneurons (PV+, SOM+, VIP+), modulatory neurons
-- **Hierarchical Organization**: Six-layer cortical columns, subcortical structures, brain systems
-- **Learning Mechanisms**: Hebbian learning, dopamine-modulated reinforcement learning, error-based learning, memory consolidation
-- **Brain Systems**: Cortex, hippocampus, basal ganglia, cerebellum, thalamus, neuromodulatory systems
+## Architecture Overview
 
-## Architecture
-
-### Core Components
-
-1. **Neuronal Diversity**
-   - Pyramidal Neurons (excitatory, layer-specific)
-   - Parvalbumin Interneurons (fast-spiking inhibitory)
-   - Somatostatin Interneurons (dendrite-targeting inhibitory)
-   - Dopaminergic Neurons (reward/modulatory)
-   - And many more specialized types
-
-2. **Cortical Organization**
-   - Six-layer cortical columns with realistic connectivity
-   - Layer-specific neuron populations and functions
-   - Inter-layer connections and feedback loops
-
-3. **Subcortical Systems**
-   - **Hippocampus**: Memory encoding, consolidation, pattern completion
-   - **Basal Ganglia**: Action selection, reinforcement learning
-   - **Cerebellum**: Motor coordination, error-based learning
-   - **Thalamus**: Sensory relay, attention modulation
-
-4. **Neuromodulatory Systems**
-   - Dopamine (reward, motivation)
-   - Acetylcholine (attention, learning rate)
-   - Norepinephrine (arousal, vigilance)
-   - Serotonin (mood, patience)
-
-### Learning Mechanisms
-
-1. **Hebbian Learning**: Spike-timing dependent plasticity (STDP)
-2. **Dopamine-Modulated Learning**: Three-factor reinforcement learning
-3. **Cerebellar Learning**: Error-based motor learning
-4. **Hippocampal Learning**: Memory consolidation and pattern completion
-5. **Adaptive Learning Rates**: Neuromodulator-driven learning rate adjustment
-
-## Quick Start (No Training Required!)
-
-### Try the Pre-trained Model Instantly
-
-We provide a pre-trained model that achieves **98.83% MNIST accuracy**. You can run it immediately without any training:
-
-```bash
-# Clone and run the demo
-git clone https://github.com/leo267410-dev/brain-inspired-ai
-cd brain-inspired-ai
-pip install -r requirements.txt
-python quick_demo.py
 ```
+Input → Multi-Resolution Embedding (token + char CNN + chunk transformer)
+      → Code-Aware RoPE
+      → 8 × Mamba SSM Blocks
+      → 8 × Hybrid SSM-Attention Blocks
+      → 8 × Full Hierarchical Sparse Attention Blocks
+      → Recursive Reasoning (scratchpad, up to 3 loops)
+      → Task Heads (LM / Code)
+      → Output
 
-The demo will:
-- Load the pre-trained model (3MB download)
-- Test on MNIST data (automatically downloaded)
-- Show performance metrics and predictions
-- Generate visualization images
-
-**No training required - just run and see results!**
-
-### What You'll See:
-- **98.83% accuracy** on MNIST test set
-- Per-class performance analysis
-- Inference speed benchmarks  
-- Visual prediction examples
-- Model architecture analysis
-
-## Installation
-
-```bash
-# Clone the repository
-git clone <repository-url>
-cd brain_inspired_ai
-
-# Install dependencies
-pip install -r requirements.txt
-
-# For GPU support (optional)
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
+Each block includes:
+  - Shared MoE FFN (64 experts, top-2 routing)
+  - Smart Neuron Gating
+  - Hebbian Lateral Connections
+  - Dynamic Width Gating
 ```
 
 ## Quick Start
 
-### Basic Usage
+### Installation
 
-```python
-from brain_inspired_ai.core_architecture import create_brain_model
-from brain_inspired_ai.learning_mechanisms import create_trainer
-
-# Create a brain-inspired model
-model = create_brain_model(input_size=784, output_size=10, scale="medium")
-
-# Create trainer with brain-inspired learning
-trainer = create_trainer(model)
-
-# Train on your data
-for epoch in range(epochs):
-    metrics = trainer.train_step(inputs, targets, reward=reward_signal)
-    print(f"Loss: {metrics['loss']:.4f}, Dopamine: {metrics['dopamine']:.4f}")
+```bash
+pip install -e .
 ```
 
-### MNIST Classification Demo
+### Run Demo
 
-```python
-from brain_inspired_ai.demo_framework import MNISTDemo, DemoConfig
-
-# Configure the demo
-config = DemoConfig(
-    model_scale="small",
-    batch_size=32,
-    epochs=20,
-    device="cuda" if torch.cuda.is_available() else "cpu"
-)
-
-# Run MNIST classification
-demo = MNISTDemo(config)
-results = demo.train()
-demo.visualize_results()
+```bash
+python scripts/demo.py
 ```
 
-### Reinforcement Learning Demo
+### Train (with synthetic data)
 
-```python
-from brain_inspired_ai.demo_framework import ReinforcementLearningDemo
-
-# Run RL training
-rl_demo = ReinforcementLearningDemo(config)
-results = rl_demo.train(num_episodes=500)
-rl_demo.visualize_results()
+```bash
+python scripts/train.py --config small --max-steps 100 --batch-size 4
 ```
 
-### Memory Pattern Completion Demo
+### Run Tests
 
-```python
-from brain_inspired_ai.demo_framework import MemoryDemo
-
-# Test memory capabilities
-memory_demo = MemoryDemo(config)
-results = memory_demo.test_pattern_completion()
-memory_demo.visualize_results()
+```bash
+python -m pytest tests/ -v
 ```
 
-## Model Scales
+### Benchmark
 
-The architecture supports different scales:
-
-- **Small**: ~500 neurons per column, faster training, suitable for demos
-- **Medium**: ~1000 neurons per column, balanced performance
-- **Large**: ~2000 neurons per column, maximum biological fidelity
-
-## Features
-
-### Biological Fidelity
-
-- **Realistic Neuron Models**: Based on actual neuronal electrophysiology
-- **Brain Region Organization**: Follows anatomical connectivity patterns
-- **Neurotransmitter Systems**: Implements major neuromodulatory pathways
-- **Learning Rules**: Based on synaptic plasticity research
-
-### Advanced Capabilities
-
-- **Adaptive Learning**: Neuromodulator-driven learning rate adjustment
-- **Memory Consolidation**: Time-dependent memory strengthening
-- **Attention Mechanisms**: Thalamic gating and cortical selection
-- **Motor Coordination**: Cerebellar error-based learning
-- **Action Selection**: Basal ganglia reinforcement learning
-
-### Performance Features
-
-- **GPU Acceleration**: Full PyTorch GPU support
-- **Scalable Architecture**: Configurable model sizes
-- **Comprehensive Benchmarks**: Multiple evaluation metrics
-- **Visualization Tools**: Built-in plotting and analysis
-
-## Benchmarks
-
-The system includes comprehensive benchmarking:
-
-1. **MNIST Classification**: Digit recognition using cortical processing
-2. **Reinforcement Learning**: CartPole control with basal ganglia
-3. **Memory Tasks**: Pattern completion with hippocampal system
-4. **Performance Metrics**: Speed, memory usage, parameter counts
-
-Example Results (small model):
-- MNIST Accuracy: ~85-90%
-- RL Performance: Learning curves similar to biological systems
-- Memory Completion: ~70-80% pattern completion accuracy
-- Forward Pass: ~10-50ms (CPU), ~1-5ms (GPU)
-
-## Research Applications
-
-This architecture is suitable for:
-
-- **Neuroscience Research**: Testing hypotheses about brain function
-- **AI Development**: Brain-inspired learning algorithms
-- **Cognitive Modeling**: Implementing cognitive architectures
-- **Neuromorphic Computing**: Brain-like hardware implementation
-- **Educational Tools**: Understanding brain organization
-
-## File Structure
-
-```
-brain_inspired_ai/
-|-- core_architecture.py      # Core brain-inspired model
-|-- learning_mechanisms.py    # Learning algorithms and training
-|-- demo_framework.py         # Comprehensive demos and benchmarks
-|-- requirements.txt          # Python dependencies
-|-- README.md                 # This file
+```bash
+python scripts/benchmark.py
 ```
 
-## Technical Details
-
-### Neuron Implementation
-
-Each neuron type implements:
-- Membrane potential dynamics
-- Adaptation mechanisms
-- Synaptic integration
-- Neurotransmitter-specific properties
-
-### Learning Rules
-
-- **STDP**: Spike-timing dependent plasticity with eligibility traces
-- **Three-Factor Learning**: Pre × Post × Neuromodulator
-- **Error-Based Learning**: Cerebellar climbing fiber error signals
-- **Memory Consolidation**: Time-dependent strengthening
-
-### Connectivity
-
-- **Local Connections**: Within-layer microcircuits
-- **Long-Range Connections**: Between brain regions
-- **Recurrent Connections**: Feedback and loop circuits
-- **Modulatory Projections**: Diffuse neuromodulatory effects
-
-## Contributing
-
-Contributions are welcome! Areas for development:
-
-1. **Additional Neuron Types**: Implement more specialized neurons
-2. **New Learning Rules**: Add novel plasticity mechanisms
-3. **More Demos**: Expand benchmark suite
-4. **Optimization**: Improve performance and efficiency
-5. **Documentation**: Enhance explanations and examples
-
-## Citation
-
-If you use this work in research, please cite:
+## Project Structure
 
 ```
-Brain-Inspired AI Architecture
-Based on comprehensive neuronal taxonomy and brain organization
-Implementing over 3,000 neuronal types and brain-inspired learning mechanisms
+nexus/                  # Python package
+├── config.py           # Dataclass-based configuration
+├── model/              # Core model components
+│   ├── nexus_model.py  # Main model (assembles all components)
+│   ├── attention.py    # Hierarchical sparse attention
+│   ├── ssm.py          # Mamba SSM blocks
+│   ├── moe_ffn.py      # Shared expert pool with MoE routing
+│   ├── smart_neuron.py # Adaptive neuron gating
+│   ├── lateral.py      # Hebbian lateral connections
+│   ├── early_exit.py   # Dynamic depth/width
+│   ├── recursive_reasoning.py
+│   ├── embeddings.py   # Multi-resolution embeddings + CodeAwareRoPE
+│   ├── task_heads.py   # LM and code output heads
+│   └── meta_controller.py
+├── thought/            # Internal chain-of-thought engine
+├── memory/             # External neural memory + knowledge embeddings
+├── search/             # MCTS code search + self-verification
+├── tokenizer/          # CodeLingual tokenizer
+├── training/           # Trainer, curriculum, distillation, loss, optimizer
+├── data/               # Datasets and preprocessing
+├── inference/          # Generation engine, quantization, serving
+└── utils/              # Profiler and metrics
+scripts/                # Training, evaluation, benchmark, and demo scripts
+tests/                  # Comprehensive test suite
 ```
+
+## Parameter Budget
+
+The base configuration achieves **< 200M parameters** through:
+
+- **Shared experts**: 64 experts are shared across all 24 layers (not duplicated per layer)
+- **Smart neuron gating**: Only ~30% of neurons activate per token
+- **Efficient MoE routing**: Top-2 expert selection from 64 experts
+- **Low-rank components**: LoRA-style adapters for test-time training
+
+## Configuration Presets
+
+| Config | Hidden Dim | Layers | Experts | Use Case |
+|--------|-----------|--------|---------|----------|
+| `nexus_omega_base()` | 768 | 24 | 64 | Full model (< 200M params) |
+| `nexus_omega_small()` | 256 | 6 | 8 | Testing and development |
+| `nexus_omega_code()` | 768 | 24 | 64 | Code generation optimized |
+| `nexus_omega_language()` | 768 | 24 | 64 | Language understanding optimized |
 
 ## License
 
-[Specify your license here]
-
-## Acknowledgments
-
-This work is based on:
-- Allen Brain Cell Atlas for neuronal taxonomy
-- Contemporary neuroscience research
-- Computational neuroscience principles
-- Machine learning and deep learning frameworks
-
----
-
-**Note**: This is a research and educational implementation. While biologically inspired, it simplifies many aspects of brain function for computational efficiency and clarity.
+MIT

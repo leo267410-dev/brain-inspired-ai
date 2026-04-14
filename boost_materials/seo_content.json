@@ -1,9 +1,0 @@
-{
-  "meta_title": "Brain-Inspired AI: 98.83% MNIST Accuracy | 3,313+ Neuronal Subtypes | Open Source",
-  "meta_description": "A comprehensive neural network system modeled after the human brain's structure and neuronal diversity. Achieves 98.83% MNIST accuracy with 760K parameters. Includes interactive visual builder and tutorials.",
-  "keywords": "brain-inspired AI, neural networks, neuroscience, machine learning, pytorch, mnst, 98.83% accuracy, allen brain atlas, neuronal subtypes, cortical organization, hippocampus, basal ganglia",
-  "og_title": "Brain-Inspired AI: Bridging Neuroscience and Machine Learning",
-  "og_description": "A complete brain-inspired AI system with 98.83% MNIST accuracy, based on 3,313+ real neuronal subtypes from the Allen Brain Atlas.",
-  "twitter_card": "summary_large_image",
-  "canonical_url": "https://github.com/leo267410-dev/brain-inspired-ai"
-}
