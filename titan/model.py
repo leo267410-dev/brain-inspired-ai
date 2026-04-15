@@ -169,6 +169,8 @@ class Titan(nn.Module):
                 pass  # Already initialized in OscillatoryActivation / OscillatoryExpertBank
             elif "W_freq" in name or "bank_freq" in name:
                 pass  # Already initialized
+            elif "bank_phase" in name or "phase" in name:
+                pass  # Already initialized with specific range for oscillatory diversity
             elif p.dim() >= 2:
                 nn.init.xavier_uniform_(p)
 

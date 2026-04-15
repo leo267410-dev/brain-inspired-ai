@@ -77,50 +77,46 @@ class TitanTrainer:
         self.metrics_history: List[Dict[str, float]] = []
 
     def train_step(self, input_ids: torch.Tensor) -> Dict[str, float]:
-        """Single training step with gradient accumulation."""
+        """Single training step with gradient accumulation.
+
+        The input_ids tensor is split into grad_accum_steps micro-batches
+        along the batch dimension. Each micro-batch is processed independently
+        with gradients accumulated, simulating a larger effective batch size.
+        """
         self.model.train()
         total_loss_accum = 0.0
         ntp_accum = 0.0
         mtp_accum = 0.0
 
-        for micro_step in range(self.cfg.grad_accum_steps):
+        # Split input into micro-batches for true gradient accumulation
+        micro_batches = input_ids.chunk(self.cfg.grad_accum_steps, dim=0)
+
+        for micro_ids in micro_batches:
             with torch.amp.autocast(
                 device_type=self.device.split(":")[0],
                 dtype=self.amp_dtype,
                 enabled=self.use_amp,
             ):
                 logits, mtp_logits = self.model(
-                    input_ids, return_mtp=True
+                    micro_ids, return_mtp=True
                 )
 
-                # Collect router entropy losses from MoE layers
-                router_losses = []
-                for layer in self.model.layers:
-                    with torch.amp.autocast(
-                        device_type=self.device.split(":")[0],
-                        dtype=self.amp_dtype,
-                        enabled=self.use_amp,
-                    ):
-                        rl = layer.ffn.router_entropy_loss(
-                            layer.norm3(
-                                torch.zeros(
-                                    1, 1, self.model.cfg.d_model,
-                                    device=input_ids.device,
-                                )
-                            )
-                        )
-                    router_losses.append(rl)
+                # Collect router entropy losses from cached probs (set during forward)
+                router_losses = [
+                    layer.ffn.router_entropy_loss()
+                    for layer in self.model.layers
+                ]
 
                 losses = titan_loss(
                     logits=logits,
-                    targets=input_ids,
+                    targets=micro_ids,
                     mtp_logits=mtp_logits,
                     mtp_weight=self.cfg.mtp_weight,
                     router_entropy_losses=router_losses,
                     router_weight=self.cfg.router_weight,
                 )
 
-                loss = losses["total"] / self.cfg.grad_accum_steps
+                loss = losses["total"] / len(micro_batches)
 
             if self.scaler is not None:
                 self.scaler.scale(loss).backward()
@@ -156,7 +152,7 @@ class TitanTrainer:
         )
 
         self.step += 1
-        avg_factor = self.cfg.grad_accum_steps
+        avg_factor = len(micro_batches)
         metrics = {
             "step": self.step,
             "loss": total_loss_accum / avg_factor,

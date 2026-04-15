@@ -84,6 +84,8 @@ class SmartMoEFFN(nn.Module):
         self.router = nn.Linear(cfg.d_model, cfg.routing_banks, bias=False)
         self.router_bias = nn.Parameter(torch.zeros(cfg.routing_banks))
         self.out_norm = RMSNorm(cfg.d_model)
+        # Cached router probabilities from last forward pass (for entropy regularization)
+        self._cached_router_probs: torch.Tensor | None = None
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         b, t, d = x.shape
@@ -91,6 +93,8 @@ class SmartMoEFFN(nn.Module):
 
         # Router scores
         scores = self.router(x) + self.router_bias
+        # Cache full router probs for entropy regularization
+        self._cached_router_probs = F.softmax(scores, dim=-1)
         topv, topi = torch.topk(scores, k=self.cfg.routing_topk, dim=-1)
         weights = F.softmax(topv, dim=-1)
 
@@ -128,15 +132,16 @@ class SmartMoEFFN(nn.Module):
 
         return self.out_norm(out)
 
-    def router_entropy_loss(self, x: torch.Tensor) -> torch.Tensor:
-        """Regularization loss to prevent router collapse (all tokens → same expert)."""
-        scores = self.router(x) + self.router_bias
-        probs = F.softmax(scores, dim=-1)  # (b, t, n_banks)
+    def router_entropy_loss(self) -> torch.Tensor:
+        """Regularization loss from cached router probs (call after forward)."""
+        if self._cached_router_probs is None:
+            return torch.tensor(0.0)
+        probs = self._cached_router_probs  # (b, t, n_banks)
         # Average probabilities across tokens
         avg_probs = probs.mean(dim=(0, 1))  # (n_banks,)
         # Target: uniform distribution → maximize entropy
         entropy = -(avg_probs * torch.log(avg_probs + 1e-8)).sum()
         max_entropy = torch.log(torch.tensor(
-            float(self.cfg.routing_banks), device=x.device
+            float(self.cfg.routing_banks), device=probs.device
         ))
         return max_entropy - entropy

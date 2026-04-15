@@ -78,7 +78,7 @@ def speculative_generate(
             for i, spec_tok in enumerate(spec_tokens):
                 if tokens_generated >= max_new_tokens:
                     break
-                verify_pos = -(len(spec_tokens) - i)
+                verify_pos = -(len(spec_tokens) + 1 - i)
                 verified = _sample(
                     verify_logits[:, verify_pos, :], temperature, top_k
                 )

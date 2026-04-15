@@ -38,8 +38,9 @@ def estimate_params(cfg: TitanConfig) -> dict:
     # Router: Linear(d→n_banks) + bias
     router_per_layer = d * n_banks + n_banks
 
-    # RMS norms: up to 3 per layer (recurrent, attention, ffn)
-    norms_per_layer = 3 * d  # attention layers have 3 norms
+    # RMS norms: 2 per layer (norm1 for recurrent, norm3 for ffn)
+    # Anchor layers get an extra norm (norm2) counted in attention_per_anchor
+    norms_per_layer = 2 * d
 
     # MoE FFN output norm
     moe_norm_per_layer = d
