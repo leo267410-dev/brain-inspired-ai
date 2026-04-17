@@ -1,1 +1,0 @@
-"""External neural memory system."""
